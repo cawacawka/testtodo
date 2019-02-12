@@ -12,10 +12,13 @@ from common import common_functions as cf
 from common.client import TodoHandler
 
 
-@pytest.fixture(scope="session")
-def todo():
-    browser = webdriver.Chrome(
-        executable_path="utilities/drivers/Win/chromedriver.exe")
+@pytest.fixture(scope="session", params=["Chrome", "Firefox"])
+def todo(request):
+    dname = request.param
+    if dname == "Chrome":
+        browser = webdriver.Chrome()
+    elif dname == "Firefox":
+        browser = webdriver.Firefox()
     browser.delete_all_cookies()
     browser.implicitly_wait(10)
     browser.get("http://todomvc.com/examples/react/#/")
@@ -35,6 +38,7 @@ def clean_todo(todo):
 
 @allure.feature('Тестирование todomvc')
 @allure.story('Базовый функционал')
+@pytest.mark.todobase
 @pytest.mark.parametrize("case",
                          base_cases.values(),
                          ids=list(base_cases.keys()))
@@ -56,6 +60,7 @@ def test_base(todo,
 
 @allure.feature('Тестирование todomvc')
 @allure.story('Базовый функционал на генерированных данных')
+@pytest.mark.todogen
 @pytest.mark.parametrize("case",
                          [cf.generate_case(test) for test in
                           gen_cases.values()],
