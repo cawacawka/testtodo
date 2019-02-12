@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import allure
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
