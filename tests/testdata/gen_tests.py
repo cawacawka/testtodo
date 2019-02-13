@@ -98,14 +98,14 @@ gen_cases = {
             "bottom": 5
         },
     },
-    "Save_state_after_f5": {
+    "Save_state_after_refresh": {
         "generated_steps": {
             "active": 3,
             "marked": 2
         },
         "extra_steps": [
             {
-                "action": "push_f5",
+                "action": "refresh_page",
             },
         ],
         "expected": {

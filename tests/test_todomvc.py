@@ -1,39 +1,12 @@
 # -*- coding: utf-8 -*-
 import json
-import time
 
 import allure
 import pytest
-from selenium import webdriver
 
+from common import common_functions as cf
 from tests.testdata.base_tests import base_cases
 from tests.testdata.gen_tests import gen_cases
-from common import common_functions as cf
-from common.client import TodoHandler
-
-
-@pytest.fixture(scope="session", params=["Chrome", "Firefox"])
-def todo(request):
-    dname = request.param
-    if dname == "Chrome":
-        browser = webdriver.Chrome()
-    elif dname == "Firefox":
-        browser = webdriver.Firefox()
-    browser.delete_all_cookies()
-    browser.implicitly_wait(10)
-    browser.get("http://todomvc.com/examples/react/#/")
-
-    yield TodoHandler(browser)
-    browser.close()
-    browser.quit()
-
-
-@pytest.fixture(scope="function")
-def clean_todo(todo):
-    yield
-    time.sleep(0.3)
-    todo.click_all()
-    todo.delete_all_notes()
 
 
 @allure.feature('Тестирование todomvc')
@@ -46,6 +19,21 @@ def test_base(todo,
               clean_todo,
               request,
               case):
+    """
+    Базовая тестовая функция, с прямым указанием текста записей,
+    и порядком действий.
+    Параметризована.
+
+    Проверяет базовый CRUD
+
+    :param todo: инстанс клиента драйвера, возвращен фикстурой todo
+    :param clean_todo: teardown фикстура, очищает все записи (можно убрать, если
+    todo фикстура имеет scope function)
+    :param request: объект pytest, используется для получения полного имени
+    теста, включающего тестовую функцию и идентификатор теста
+    :param case: тестовый набор, шаги и ожидаемый результат
+    :return:
+    """
     testname = request.node.name
     cf.allure_attach_str_data(testname, json.dumps(case, indent=4), "JSON")
 
@@ -69,6 +57,25 @@ def test_generated(todo,
                    clean_todo,
                    request,
                    case):
+    """
+    Тестовая функция, с генирированными данными, и порядком действий.
+    Параметризована.
+
+    Заполняет todo различным числом записей, помечает часть их, если требуется
+
+    Проверяет корректность количества отображаемых на странице записей
+    различного типа (active, completed) при переходах по различным режимам
+    отображения и т.п.
+
+
+    :param todo: инстанс клиента драйвера, возвращен фикстурой todo
+    :param clean_todo: teardown фикстура, очищает все записи (можно убрать, если
+    todo фикстура имеет scope function)
+    :param request: объект pytest, используется для получения полного имени
+    теста, включающего тестовую функцию и идентификатор теста
+    :param case: тестовый набор, шаги и ожидаемый результат
+    :return:
+    """
     testname = request.node.name
     cf.allure_attach_str_data(testname, json.dumps(case, indent=4), "JSON")
 
