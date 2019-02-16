@@ -11,9 +11,8 @@ cache:
 
 run:
   script:
-  - lsb_release -a
-  - apt-get update
-  - apt-get install firefox
+  - apt-get -y update
+  - apt-get -y install firefox
   - wget https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz
   - sh -c 'tar -x geckodriver -zf geckodriver-v0.23.0-linux64.tar.gz -O > /usr/bin/geckodriver'
   - chmod +x /usr/bin/geckodriver
