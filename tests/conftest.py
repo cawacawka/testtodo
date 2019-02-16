@@ -30,9 +30,9 @@ def todo(request):
         options.add_argument("--headless")
 
     if dname == "Chrome":
-        browser = webdriver.Chrome(chrome_options=options)
+        browser = webdriver.Chrome(options=options)
     elif dname == "Firefox":
-        browser = webdriver.Firefox(firefox_options=options)
+        browser = webdriver.Firefox(options=options)
     browser.delete_all_cookies()
     browser.implicitly_wait(10)
     browser.get("http://todomvc.com/examples/react/#/")
