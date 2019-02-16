@@ -1,5 +1,5 @@
 
-image: joyzoursky/python-chromedriver:latest
+image: joyzoursky/python-chromedriver:3.7
 
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
