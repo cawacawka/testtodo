@@ -30,7 +30,7 @@ def todo(request):
         options.add_argument("--headless")
 
     if dname == "Chrome":
-        browser = webdriver.Chrome(options=options)
+        browser = webdriver.Chrome(options=options, executable_path="/usr/bin/chromedriver")
     elif dname == "Firefox":
         browser = webdriver.Firefox(options=options)
     browser.delete_all_cookies()
