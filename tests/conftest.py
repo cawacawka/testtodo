@@ -25,14 +25,15 @@ def todo(request):
     :return:
     """
     dname = request.param
-    if "Linux" in platform():
-        options = Options()
-        options.add_argument("--headless")
+    # if "Linux" in platform():
+    #     options = Options()
+    #     options.add_argument("--headless")
+
 
     if dname == "Chrome":
-        browser = webdriver.Chrome(options=options, executable_path="/usr/bin/chromedriver")
+        browser = webdriver.Chrome()
     elif dname == "Firefox":
-        browser = webdriver.Firefox(options=options)
+        browser = webdriver.Firefox()
     browser.delete_all_cookies()
     browser.implicitly_wait(10)
     browser.get("http://todomvc.com/examples/react/#/")

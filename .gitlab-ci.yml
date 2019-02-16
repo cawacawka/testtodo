@@ -1,7 +1,7 @@
 # This file is a template, and might need editing before it works on your project.
 # Official language image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/python/tags/
-image: python:latest
+image: docker-python-chromedriver:latest
 
 # Change pip's cache directory to be inside the project directory since we can
 # only cache local items.
@@ -20,22 +20,7 @@ cache:
 
 run:
   script:
-  - apt-get update
-  - apt-get install -y unzip xvfb libxi6 libgconf-2-4
-  - apt-get install -y default-jdk
-  - curl -sS -o - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add
-  - echo "deb [arch=amd64]  http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list
-  - apt-get -y update
-  - apt-get -y install google-chrome-stable
-  - wget https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
-  - unzip chromedriver_linux64.zip
-  - mv chromedriver /usr/bin/chromedriver
-  - chown root:root /usr/bin/chromedriver
-  - chmod +x /usr/bin/chromedriver
-  - wget https://selenium-release.storage.googleapis.com/3.13/selenium-server-standalone-3.13.0.jar
-  - wget http://www.java2s.com/Code/JarDownload/testng/testng-6.8.7.jar.zip
-  - unzip testng-6.8.7.jar.zip
-  - python -V               # Print out python version for debugging
+  - python3 -V               # Print out python version for debugging
   - pip install virtualenv
   - virtualenv venv
   - source venv/bin/activate
