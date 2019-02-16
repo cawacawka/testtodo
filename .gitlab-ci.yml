@@ -44,14 +44,3 @@ run:
   artifacts:
     paths:
     - .tests/logs
-
-pages:
-  script:
-  - pip install sphinx sphinx-rtd-theme
-  - cd doc ; make html
-  - mv build/html/ ../public/
-  artifacts:
-    paths:
-    - public
-  only:
-  - develop
