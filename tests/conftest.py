@@ -9,8 +9,8 @@ from common.client import TodoHandler
 
 
 @pytest.fixture(scope="session",
-                # params=["Chrome", "Firefox"],
-                params=["Chrome"]
+                params=["Chrome", "Firefox"],
+                # params=["Chrome"]
                 )
 def todo(request):
     """
@@ -27,14 +27,21 @@ def todo(request):
     dname = request.param
     if "Linux" in platform():
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--no-sandbox')
-        chrome_options.add_argument('--headless')
-        chrome_options.add_argument('--disable-gpu')
+        ffox_options = webdriver.FirefoxOptions()
+        for options in [chrome_options, ffox_options]:
+            options.add_argument('--no-sandbox')
+            options.add_argument('--headless')
+            options.add_argument('--disable-gpu')
 
-    if dname == "Chrome":
-        browser = webdriver.Chrome(chrome_options=chrome_options)
-    elif dname == "Firefox":
-        browser = webdriver.Firefox()
+        if dname == "Chrome":
+            browser = webdriver.Chrome(chrome_options=chrome_options)
+        elif dname == "Firefox":
+            browser = webdriver.Firefox(firefox_options=ffox_options)
+    else:
+        if dname == "Chrome":
+            browser = webdriver.Chrome()
+        elif dname == "Firefox":
+            browser = webdriver.Firefox()
     browser.delete_all_cookies()
     browser.implicitly_wait(10)
     browser.get("http://todomvc.com/examples/react/#/")

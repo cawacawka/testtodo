@@ -11,7 +11,11 @@ cache:
 
 run:
   script:
-  - python3 -V               # Print out python version for debugging
+  - wget https://github.com/mozilla/geckodriver/releases/download/v0.23.0/geckodriver-v0.23.0-linux64.tar.gz
+  - sh -c 'tar -x geckodriver -zf geckodriver-v0.23.0-linux64.tar.gz -O > /usr/bin/geckodriver'
+  - chmod +x /usr/bin/geckodriver
+  - rm geckodriver-v0.23.0-linux64.tar.gz
+  - python3 -V
   - pip install virtualenv
   - virtualenv venv
   - source venv/bin/activate
@@ -19,4 +23,4 @@ run:
   - python -m pytest ./tests
   artifacts:
     paths:
-    - ./tests/logs
+    - ./tests/logs/report
