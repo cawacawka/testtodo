@@ -3,11 +3,15 @@ import time
 
 import pytest
 from selenium import webdriver
-
+from selenium.webdriver.chrome.options import Options
+from platform import platform
 from common.client import TodoHandler
 
 
-@pytest.fixture(scope="session", params=["Chrome", "Firefox"])
+@pytest.fixture(scope="session",
+                # params=["Chrome", "Firefox"],
+                params=["Chrome"]
+                )
 def todo(request):
     """
     Базовая фикстура, возвращает инстанс драйвера.
@@ -21,10 +25,14 @@ def todo(request):
     :return:
     """
     dname = request.param
+    if "Linux" in platform():
+        options = Options()
+        options.add_argument("--headless")
+
     if dname == "Chrome":
-        browser = webdriver.Chrome()
+        browser = webdriver.Chrome(chrome_options=options)
     elif dname == "Firefox":
-        browser = webdriver.Firefox()
+        browser = webdriver.Firefox(firefox_options=options)
     browser.delete_all_cookies()
     browser.implicitly_wait(10)
     browser.get("http://todomvc.com/examples/react/#/")
