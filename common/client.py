@@ -92,7 +92,7 @@ class TodoHandler:
         """
         Базовая функция, осуществяет поиск "опорного" элемента, внутри которого
         содержатся все имеющиеся записи
-        :return: элемент todo-list страницы
+        :return: элемент todolist страницы
         """
         return self.driver.find_element_by_class_name('todo-list')
 
