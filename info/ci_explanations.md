@@ -2,15 +2,17 @@
 
 Allure-report публикуется в Gitlab Pages
 
-Для всех стадий использовался один и тот же docker-imane. python:latest
-
 ## stage build
 
-Билд приложение. 
+Билд приложения. 
 
 В идеале, надо клонировать todomvc, запускать сервер, шарить его
 
-Не заимплеменчено. На будущее заведена stageю
+Не заимплеменчено. Stage "на будущее" + для отображения предполагаемой схемы.
+
+А пока используется приложение из интернетов.
+
+docker-image не указан. берется дефолтный
 
 ## stage test
 
@@ -21,7 +23,18 @@ Allure-report публикуется в Gitlab Pages
  - Запускает тест
  - на выходе атрефакт с allure-report'ом, который еще надо собрать 
  
-## stage report
+Используется docker-imane. python:latest 
+C предустановленным питоном
+ 
+## stage report_gen
  - Ставит окружение для allure-commandline (java)
  - Генерирует html-репорт из артефактов на stage test
  - Выкладывает его в public, делает доступным для просмотра на Gitlab Pages
+ 
+ Используется docker-imane. atlassian/default-image
+ с предустановленной java
+ 
+ ## stage report_publish
+ - Публикует отчет в Gitlab Pages
+ 
+ docker-image не указан. берется дефолтный
