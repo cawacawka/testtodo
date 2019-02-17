@@ -1,4 +1,5 @@
-image: python:latest
+#image: python:latest
+
 
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
@@ -12,7 +13,8 @@ cache:
 stages:
   - build  #(clone todomvs, run with python -m http.server for example)
   - test   #(if build, then use local todomvc server from)
-  - report
+  - report_gen
+  - report_publish
 
 fake_build:
   stage: build
@@ -22,6 +24,7 @@ fake_build:
   - echo "run server with python for example"
 
 run tests:
+  image: python:latest
   stage: test
   script:
   # install google chrome
@@ -52,23 +55,38 @@ run tests:
   - pip install -r requirements.txt
   - python -m pytest ./tests
   artifacts:
+    expire_in: 2 weeks
+    when: always
     paths:
     - ./tests/logs/report
 
-pages:
-  stage: report
+generate report:
+  image: atlassian/default-image
+  stage: report_gen
   script:
   # install allure cmd
-  - apt-get -y update
-  - apt-get -y install default-jre
   - curl -o allure-2.6.0.tgz -Ls https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/2.6.0/allure-2.6.0.tgz
   - tar -zxvf allure-2.6.0.tgz -C /opt/
   - ln -s /opt/allure-2.6.0/bin/allure /usr/bin/allure
   - allure --version
   # generate html report
   - allure generate ./tests/logs/report --output ./tests/logs/report_html
-  - mv ./tests/logs/report_html public/
   when: always
   artifacts:
+    when: always
+    paths:
+      - ./tests/logs/report_html
+
+
+pages:
+  stage: report_publish
+  script:
+  - mv ./tests/logs/report_html public/
+  when: always
+  only:
+  - master
+  artifacts:
+    expire_in: 2 weeks
+    when: always
     paths:
       - public
