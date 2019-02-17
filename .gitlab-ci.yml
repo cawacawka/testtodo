@@ -9,7 +9,20 @@ cache:
     - .cache/pip
     - venv/
 
-run:
+stages:
+  - build  #(clone todomvs, run with python -m http.server for example)
+  - test   #(if build, then use local todomvc server from)
+  - report
+
+fake_build:
+  stage: build
+  script:
+  - echo "FAKE STEPS, NOT IMPLEMENTED"
+  - echo "git clone todomvc"
+  - echo "run server with python for example"
+
+run tests:
+  stage: test
   script:
   # install google chrome
   - wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -41,3 +54,21 @@ run:
   artifacts:
     paths:
     - ./tests/logs/report
+
+pages:
+  stage: report
+  script:
+  # install allure cmd
+  - apt-get -y update
+  - apt-get -y install default-jre
+  - curl -o allure-2.6.0.tgz -Ls https://dl.bintray.com/qameta/generic/io/qameta/allure/allure/2.6.0/allure-2.6.0.tgz
+  - tar -zxvf allure-2.6.0.tgz -C /opt/
+  - ln -s /opt/allure-2.6.0/bin/allure /usr/bin/allure
+  - allure --version
+  # generate html report
+  - allure generate ./tests/logs/report --output ./tests/logs/report_html
+  - mv ./tests/logs/report_html public/
+  when: always
+  artifacts:
+    paths:
+      - public

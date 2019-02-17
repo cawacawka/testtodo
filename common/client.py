@@ -288,6 +288,15 @@ class TodoHandler:
             return result
         return notes_obj
 
+    @allure.step("Создание скриншота")
+    def take_screenshot(self, png_path):
+        """
+        Специализированная функция
+        Делает скриншот текущего состояния страницы.
+        :return:
+        """
+        self.driver.get_screenshot_as_file(png_path)
+
     @allure.step("Выполнение шагов теста")
     def do_steps(self, steps):
         """
