@@ -34,9 +34,9 @@ def todo(request):
             options.add_argument('--disable-gpu')
 
         if dname == "Chrome":
-            browser = webdriver.Chrome(chrome_options=chrome_options)
+            browser = webdriver.Chrome(options=chrome_options)
         elif dname == "Firefox":
-            browser = webdriver.Firefox(firefox_options=ffox_options)
+            browser = webdriver.Firefox(options=ffox_options)
     else:
         if dname == "Chrome":
             browser = webdriver.Chrome()
