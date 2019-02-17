@@ -27,8 +27,8 @@ python -m pytest <path_to>/testtodo/tests
 
 
 ### Описание кейсов
- - Автоматизированный набор [SMOKE](automated.md)
- - Остальное, не реализованное [TO_BE_IMPLEMENTED](next.md)
+ - Автоматизированный набор [SMOKE](info/automated.md)
+ - Остальное, не реализованное [TO_BE_IMPLEMENTED](info/Not_implemented.md)
 
 ### Описание gitlab ci
- - [CI explanations](ci_explanations.md)
+ - [CI explanations](info/ci_explanations.md)
