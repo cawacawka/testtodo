@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+import os
+import traceback
+
 import allure
+import pytest
 from faker import Faker
 
 
@@ -71,3 +75,41 @@ def allure_attach_str_data(attach_name, attach_data, attachment_type="TEXT"):
         attach_name,
         attachment_type=getattr(allure.attachment_type, attachment_type)
     )
+
+
+def allure_attach_file(source, attach_name, attachment_type="TEXT"):
+    """
+    Аллюр аттач
+    :param source: путь к файлу
+    :param attach_name: имя вложения
+    :param attachment_type: mime тип (см allure.attachment_type)
+    :return:
+    """
+    allure.attach.file(
+        source, attach_name,
+        attachment_type=getattr(allure.attachment_type, attachment_type)
+    )
+
+
+class ExcHandler(object):
+    """
+    Контекст менеджер для перехвата и обработки исключений
+    При любой ошибке будет сделан скриншот.
+    """
+
+    def __init__(self, testname, todohandler):
+        self.testname = testname
+        self.todohandler = todohandler
+        self.screenpath = os.path.join("tests/logs", testname + ".png")
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, ex_type, ex_val, tb):
+        if ex_type:
+            self.todohandler.take_screenshot(self.screenpath)
+            allure_attach_file(self.screenpath, self.testname, "PNG")
+            pytest.fail(traceback.format_exception_only(ex_type, ex_val)[0])
+        else:
+            self.todohandler.take_screenshot(self.screenpath)
+            allure_attach_file(self.screenpath, self.testname, "PNG")

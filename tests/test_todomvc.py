@@ -36,14 +36,12 @@ def test_base(todo,
     """
     testname = request.node.name
     cf.allure_attach_str_data(testname, json.dumps(case, indent=4), "JSON")
-
-    todo.do_steps(case["steps"])
-
-    infos = todo.get_notes_text_and_status()
-    cf.allure_attach_str_data("{}_notes".format(testname),
-                              json.dumps(infos, indent=4), "JSON")
-
-    cf.check_text_and_status(infos, case["expected_notes"])
+    with cf.ExcHandler(testname, todohandler=todo):
+        todo.do_steps(case["steps"])
+        infos = todo.get_notes_text_and_status()
+        cf.allure_attach_str_data("{}_notes".format(testname),
+                                  json.dumps(infos, indent=4), "JSON")
+        cf.check_text_and_status(infos, case["expected_notes"])
 
 
 @allure.feature('Тестирование todomvc')
@@ -78,22 +76,22 @@ def test_generated(todo,
     """
     testname = request.node.name
     cf.allure_attach_str_data(testname, json.dumps(case, indent=4), "JSON")
+    with cf.ExcHandler(testname, todohandler=todo):
+        todo.do_steps(case["steps"])
 
-    todo.do_steps(case["steps"])
+        infos = todo.get_notes_text_and_status()
+        cf.allure_attach_str_data("{}_notes".format(testname),
+                                  json.dumps(infos, indent=4), "JSON")
 
-    infos = todo.get_notes_text_and_status()
-    cf.allure_attach_str_data("{}_notes".format(testname),
-                              json.dumps(infos, indent=4), "JSON")
+        fact_from_bottom = todo.get_status_string()
+        fact_active = len(todo.find_all_active())
+        fact_completed = len(todo.find_all_completed())
 
-    fact_from_bottom = todo.get_status_string()
-    fact_active = len(todo.find_all_active())
-    fact_completed = len(todo.find_all_completed())
-
-    cf.check_notes_count(
-        fact_from_bottom,
-        fact_active,
-        fact_completed,
-        case["expected"]["bottom"],
-        case["expected"]["active"],
-        case["expected"]["marked"]
-    )
+        cf.check_notes_count(
+            fact_from_bottom,
+            fact_active,
+            fact_completed,
+            case["expected"]["bottom"],
+            case["expected"]["active"],
+            case["expected"]["marked"]
+        )
