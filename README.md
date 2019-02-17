@@ -12,7 +12,7 @@
   - Python 3.+ (разработка и тесты 3.7.2)
 
 ### python requirements
-  - см. в requirements.txt
+  - см. в [requirements.txt](requirements.txt)
   
 ### python requirements install
 ```sh
@@ -27,10 +27,8 @@ python -m pytest <path_to>/testtodo/tests
 
 
 ### Описание кейсов
- - Автоматизированный набор (Smoke)
- - Остальное, не реализованное
+ - Автоматизированный набор [SMOKE](automated.md)
+ - Остальное, не реализованное [TO_BE_IMPLEMENTED](next.md)
 
 ### Описание gitlab ci
- - stage fake_build
- - stage test
- - stage report
+ - [CI explanations](ci_explanations.md)
