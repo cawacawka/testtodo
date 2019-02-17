@@ -3,14 +3,12 @@ import time
 
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from platform import platform
 from common.client import TodoHandler
 
 
 @pytest.fixture(scope="session",
                 params=["Chrome", "Firefox"],
-                # params=["Chrome"]
                 )
 def todo(request):
     """
